@@ -1,0 +1,38 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    padding: 8px;
+}
+
+#filesTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#filesTable tr:hover {
+    background-color: #dddddd;
+}
+
+#filesTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+h1 {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.version {
+    font-size: 0.75em;
+    text-align: right;
+    width: 100%;
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Skombinuj KML mapy do jednej!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Skombinuj KML mapy do jednej!</h1>
+    <p class="version">Verzia 1.0.0</p>
+    <!-- We are using node
+    <script>
+        document.write(process.versions.node)
+    </script>,
+    Chrome
+    <script>
+        document.write(process.versions.chrome)
+    </script>,
+    and Electron
+    <script>
+        document.write(process.versions.electron)
+    </script>.
+    <br />
+    <br />-->
+    <table>
+        <form id="layerCreateForm">
+            <tr>
+                <td>
+                    <label for="layerName">Názov vrstvy</label>
+                    <input type="text" name="layerName" id="layerName" />
+                </td>
+                <td>
+                    <button>Pridaj vrstvu</button>
+                </td>
+            </tr>
+        </form>
+        <tr>
+            <td id="layersList"></td>
+            <td></td>
+        </tr>
+        <form id="filePickerForm">
+            <tr>
+                <td>
+                    <label for="filePicker">KML súbory: </label>
+                    <input id="filePicker" name="filePicker" type="file" multiple disabled="true">
+                </td>
+                <td>
+                    <button id="filePickerSubmit" disabled="true">Pridaj súbory</button>
+                </td>
+            </tr>
+        </form>
+        <form id="kmlCreatorForm">
+            <tr>
+                <td></td>
+                <td>
+                    <button id="kmlCreateButton" disabled="true">Vytvor Mapu</button>
+                </td>
+            </tr>
+        </form>
+        <form id="kmlClearForm">
+            <tr>
+                <td>
+                    <button>Zmaž dáta / Začni znovu</button>
+                </td>
+                <td></td>
+            </tr>
+        </form>
+    </table>
+    <br /><br />
+
+    <table id="filesTable">
+        <thead>
+            <tr>
+                <th>Cesta</th>
+                <th>Farba</th>
+                <th>Vrstva</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <script src="./renderer.js"></script>
+</body>
+
+</html>
