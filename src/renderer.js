@@ -46,21 +46,21 @@ document
     .querySelector('#kmlCreatorForm')
     .addEventListener('submit', (event) => {
         event.preventDefault();
-        var data = [];
+        var trailsInfo = [];
         var table = document.getElementById('filesTable');
         for (var i = 1, row; row = table.rows[i]; i++) {
             var colorSelect = row.cells[1].childNodes[0];
             var layerSelect = row.cells[2].childNodes[0];
 
-            var file = {};
-            file.path = row.cells[0].innerHTML;
-            file.color = colorSelect.options[colorSelect.selectedIndex].value;
-            file.layer = layerSelect.options[layerSelect.selectedIndex].value;
+            var trailInfo = {};
+            trailInfo.path = row.cells[0].innerHTML;
+            trailInfo.color = colorSelect.options[colorSelect.selectedIndex].value;
+            trailInfo.layer = layerSelect.options[layerSelect.selectedIndex].value;
 
-            data.push(file);
+            trailsInfo.push(trailInfo);
         }
 
-        ipcRenderer.send('data', data);
+        ipcRenderer.send('trailsInfo', trailsInfo);
     });
 
 document

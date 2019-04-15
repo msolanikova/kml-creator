@@ -8,6 +8,7 @@ var fs = require('fs');
 var os = require('os');
 const path = require('path');
 const kmlCreator = require('./kml-creator.js')
+const trailFilesProcessor = require('./trail-files-processor.js')
 
 let mainWindow
 
@@ -33,8 +34,25 @@ app.on('window-all-closed', function () {
     }
 })
 
-ipcMain.on('data', (event, data) => {
-    kmlCreator.createKMLMapAsync(data, 'Mapa').then(content => {
+ipcMain.on('trailsInfo', (event, trailsInfo) => {
+    // filesInfo is array of objects with properties path, color, layer that user set up
+
+    var errors = [];
+    // process all files
+    trailFilesProcessor.processFiles(trailsInfo)
+
+        // then create new KML map
+        .then(trailsWithContent => {
+            return new Promise((resolve, reject) => {
+                var filteredTrails = filterTrailsWithContent(trailsWithContent);
+
+                errors = filteredTrails.errors;
+                resolve(kmlCreator.createKMLMap(filteredTrails.correctTrailsWithContent, 'Mapa'));
+            });
+        })
+
+        // then show save dialog
+        .then(content => {
             var filters = [{
                 name: 'KML',
                 extensions: ['kml']
@@ -54,6 +72,8 @@ ipcMain.on('data', (event, data) => {
                 });
             });
         })
+
+        // then save new map
         .then(kmlMap => {
             return new Promise((resolve, reject) => {
                 fs.writeFile(kmlMap.filename, kmlMap.content, 'utf-8', (err) => {
@@ -65,13 +85,24 @@ ipcMain.on('data', (event, data) => {
                 });
             });
         })
+
+        // then show message box
         .then(kmlMap => {
+            var message;
+            if (errors.length == 0) {
+                message = `Uloženie do${os.EOL}${kmlMap.filename}${os.EOL}prebehlo úspešne`;
+            } else {
+                message = `Uloženie do${os.EOL}${kmlMap.filename}${os.EOL}prebehlo úspešne${os.EOL}${os.EOL}Žiaľ, nasledujúce súbory sa nepodarilo spracovať:${os.EOL}`;
+                errors.forEach(error => {
+                    message += `${error.file} - ${error.error}${os.EOL}`
+                });
+            }
+
             dialog.showMessageBox(mainWindow, {
-                type: 'info',
+                type: errors.length == 0 ? 'info' : 'warning',
                 title: 'KML Mapa',
-                message: `Uloženie do${os.EOL}${kmlMap.filename}${os.EOL}prebehlo úspešne`
+                message: message
             }, (response) => {
-                console.log(response);
                 mainWindow.webContents.send('saveSuccess', response);
             });
         })
@@ -81,3 +112,24 @@ ipcMain.on('data', (event, data) => {
             }
         });
 });
+
+var filterTrailsWithContent = (trailsWithContent) => {
+    var correctTrailsWithContent = [];
+    var errors = [];
+
+    trailsWithContent.forEach(trailWithContent => {
+        if (trailWithContent.error === undefined) {
+            correctTrailsWithContent.push(trailWithContent);
+        } else {
+            errors.push({
+                error: trailWithContent.error,
+                file: trailWithContent.trailInfo.path
+            });
+        }
+    });
+
+    return {
+        correctTrailsWithContent: correctTrailsWithContent,
+        errors: errors
+    };
+}
