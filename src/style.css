@@ -36,3 +36,9 @@ h1 {
     text-align: right;
     width: 100%;
 }
+
+/*.container-fluid .row .col-sm,
+.container-fluid .row .col-sm-10,
+.container-fluid .row .col-sm-2 {
+    border: 1px solid black;
+}*/
