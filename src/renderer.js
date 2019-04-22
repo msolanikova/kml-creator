@@ -33,9 +33,9 @@ document
         filePickerInput.value = null;
         const filesFormatted = selectedFiles.map(file => file.path);
 
-        var filesTableElement = document.getElementById('filesTable');
+        var filesTableBodyElement = document.getElementById('filesTable').tBodies[0];
         filesFormatted.forEach(file => {
-            var row = filesTableElement.insertRow(-1);
+            var row = filesTableBodyElement.insertRow(-1);
             row.insertCell(0).innerHTML = file;
             row.insertCell(1).appendChild(createColorSelect());
             row.insertCell(2).appendChild(createLayersSelect());
@@ -73,6 +73,24 @@ document
 ipcRenderer.on('saveSuccess', (event, response) => {
     clearUI();
 })
+
+function addFiles() {
+    var filePickerInput = document.getElementById('filePicker');
+    const selectedFiles = [...filePickerInput.files]
+    if (selectedFiles.length > 0) {
+        enableKmlCreate();
+    }
+    filePickerInput.value = null;
+    const filesFormatted = selectedFiles.map(file => file.path);
+
+    var filesTableBodyElement = document.getElementById('filesTable').tBodies[0];
+    filesFormatted.forEach(file => {
+        var row = filesTableBodyElement.insertRow(-1);
+        row.insertCell(0).innerHTML = file;
+        row.insertCell(1).appendChild(createColorSelect());
+        row.insertCell(2).appendChild(createLayersSelect());
+    });
+}
 
 function createColorSelect() {
     var colorSelect = document.createElement('select');
@@ -141,7 +159,7 @@ function createLayersSelect() {
 
 function enableFilePicker() {
     document.getElementById('filePicker').disabled = false;
-    document.getElementById('filePickerSubmit').disabled = false;
+    document.getElementById('filePickerButton').classList.remove('disabled');
 }
 
 function enableKmlCreate() {
@@ -150,7 +168,7 @@ function enableKmlCreate() {
 
 function clearUI() {
     document.getElementById('filePicker').disabled = true;
-    document.getElementById('filePickerSubmit').disabled = true;
+    document.getElementById('filePickerButton').classList.add('disabled');
     document.getElementById('kmlCreateButton').disabled = true;
 
     clearLayers();
