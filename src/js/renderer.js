@@ -72,7 +72,7 @@ document
             var color = buttonBackgroundColorClass.replace('bg-', '');
 
             var trailInfo = {};
-            trailInfo.path = row.cells[0].innerHTML;
+            trailInfo.path = decodeHTMLEntities(row.cells[0].innerHTML);
             trailInfo.color = color;
             trailInfo.layer = layerSelect.options[layerSelect.selectedIndex].value;
 
@@ -208,4 +208,21 @@ function clearTable() {
     for (var i = rowCount - 1; i > 0; i--) {
         table.deleteRow(i);
     }
+}
+
+function decodeHTMLEntities(encodedString) {
+    var translate_re = /&(nbsp|amp|quot|lt|gt);/g;
+    var translate = {
+        "nbsp": " ",
+        "amp": "&",
+        "quot": "\"",
+        "lt": "<",
+        "gt": ">"
+    };
+    return encodedString.replace(translate_re, function (match, entity) {
+        return translate[entity];
+    }).replace(/&#(\d+);/gi, function (match, numStr) {
+        var num = parseInt(numStr, 10);
+        return String.fromCharCode(num);
+    });
 }

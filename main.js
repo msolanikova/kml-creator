@@ -98,7 +98,7 @@ ipcMain.on('trailsInfo', (event, trailsInfo) => {
             } else {
                 message = `Uloženie do${os.EOL}${kmlMap.filename}${os.EOL}prebehlo úspešne${os.EOL}${os.EOL}Žiaľ, nasledujúce súbory sa nepodarilo spracovať:${os.EOL}`;
                 errors.forEach(error => {
-                    message += `${error.file} - ${error.error}${os.EOL}`
+                    message += `-> ${error.file} - ${error.error}${os.EOL}`
                 });
             }
 
@@ -111,10 +111,9 @@ ipcMain.on('trailsInfo', (event, trailsInfo) => {
             });
         })
         .catch(errors => {
-            console.log(errors);
-            var message = `Nie je možné spracovať žiadny z vybraných súborov${os.EOL}`;
+            var message = `Nie je možné spracovať žiadny z vybraných súborov${os.EOL}${os.EOL}`;
             errors.forEach(error => {
-                message += `${error.file} - ${error.error}${os.EOL}`
+                message += `-> ${error.file} - ${error.error}${os.EOL}`
             });
             dialog.showErrorBox('Chyba', message);
         });
