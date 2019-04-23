@@ -12,7 +12,7 @@
     <h1 class="bg-success text-white">Skombinuj KML mapy do jednej!</h1>
     <p class="version">Verzia 2.0.0</p>
 
-    <div class="container">
+    <div class="container-fluid">
         <form id="layerCreateForm">
             <div class="row">
                 <div class="col">
@@ -28,18 +28,19 @@
                     <div>Vrstvy: <span id="layersList">&nbsp;</span></div>
                 </div>
             </div>
-        </form>
+    </div>
+    </form>
     </div>
 
     <br />
 
-    <div class="container">
+    <div class="container-fluid">
         <form id="filePickerForm">
             <div class="row">
                 <div class="col">
                     <label id="filePickerButton" class="btn btn-success btn-file disabled">
                         Vyber KML alebo GPX súbory <input type="file" id="filePicker" name="filePicker" multiple
-                            style="display: none;" disabled="true" onchange="addFiles()">
+                            style="display: none;" disabled="true">
                     </label>
                 </div>
                 <div class="col">
@@ -51,7 +52,7 @@
 
     <hr />
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col">
                 <form id="kmlCreatorForm">
@@ -68,7 +69,7 @@
 
     <hr /><br />
 
-    <div class="container">
+    <div class="container-fluid">
         <table id="filesTable" class="table table-bordered table-striped">
             <thead>
                 <tr class="bg-success text-white">
@@ -83,6 +84,8 @@
     </div>
 
     <script src="./renderer.js"></script>
+    <script src="./jquery-3.4.0.slim.min.js"></script>
+    <script src="./popper.min.js"></script>
     <script src="./bootstrap.bundle.min.js"></script>
 </body>
 

@@ -14,3 +14,35 @@
     text-align: right;
     width: 90%;
 }
+
+.bg-red {
+    background-color: #ff0000 !important;
+}
+
+.bg-lightred {
+    background-color: #ff6666 !important;
+}
+
+.bg-blue {
+    background-color: #0000ff !important;
+}
+
+.bg-lightblue {
+    background-color: #0099ff !important;
+}
+
+.bg-green {
+    background-color: #00ff00 !important;
+}
+
+.bg-darkgreen {
+    background-color: #00cc00 !important;
+}
+
+.bg-yellow {
+    background-color: #ffff00 !important;
+}
+
+.bg-orange {
+    background-color: #ff9900 !important;
+}
