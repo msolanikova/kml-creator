@@ -47,7 +47,11 @@ ipcMain.on('trailsInfo', (event, trailsInfo) => {
                 var filteredTrails = filterTrailsWithContent(trailsWithContent);
 
                 errors = filteredTrails.errors;
-                resolve(kmlCreator.createKMLMap(filteredTrails.correctTrailsWithContent, 'Mapa'));
+                if (filteredTrails.correctTrailsWithContent.length == 0) {
+                    reject(errors);
+                } else {
+                    resolve(kmlCreator.createKMLMap(filteredTrails.correctTrailsWithContent, 'Mapa'));
+                }
             });
         })
 
@@ -106,10 +110,13 @@ ipcMain.on('trailsInfo', (event, trailsInfo) => {
                 mainWindow.webContents.send('saveSuccess', response);
             });
         })
-        .catch(error => {
-            if (error != 'FILE_NOT_SELECTED') {
-                dialog.showErrorBox('Chyba', `Nepodarilo sa uložiť mapu${os.EOL}${error}`);
-            }
+        .catch(errors => {
+            console.log(errors);
+            var message = `Nie je možné spracovať žiadny z vybraných súborov${os.EOL}`;
+            errors.forEach(error => {
+                message += `${error.file} - ${error.error}${os.EOL}`
+            });
+            dialog.showErrorBox('Chyba', message);
         });
 });
 

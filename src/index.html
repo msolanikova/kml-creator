@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Skombinuj KML mapy do jednej!</title>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./bootstrap.min.css">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/piklor.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+
 </head>
 
 <body class="pageCenter">
@@ -25,14 +28,17 @@
                 <div class="w-100">
                 </div>
                 <div class="col">
-                    <div>Vrstvy: <span id="layersList">&nbsp;</span></div>
+                    <div class="alert alert-success" role="alert" style="margin-top: 10px;">
+                        Vrstvy: <span id="layersList" class="alert-link">&nbsp;</span>
+                    </div>
                 </div>
+                <div class="col">&nbsp;</div>
             </div>
     </div>
     </form>
     </div>
 
-    <br />
+    <hr />
 
     <div class="container-fluid">
         <form id="filePickerForm">
@@ -55,13 +61,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <form id="kmlCreatorForm">
-                    <button id="kmlCreateButton" class="btn btn-danger" disabled="true">Vytvor Mapu</button>
+                <form id="kmlClearForm">
+                    <button class="btn btn-secondary">Zmaž dáta / Začni znovu</button>
                 </form>
             </div>
             <div class="col">
-                <form id="kmlClearForm">
-                    <button class="btn btn-secondary">Zmaž dáta / Začni znovu</button>
+                <form id="kmlCreatorForm">
+                    <button id="kmlCreateButton" class="btn btn-danger" disabled="true">Vytvor Mapu</button>
                 </form>
             </div>
         </div>
@@ -73,9 +79,9 @@
         <table id="filesTable" class="table table-bordered table-striped">
             <thead>
                 <tr class="bg-success text-white">
-                    <th>Cesta</th>
-                    <th>Farba</th>
-                    <th>Vrstva</th>
+                    <th style="width: 70%;">Cesta</th>
+                    <th style="width: 15%;">Farba</th>
+                    <th style="width: 15%;">Vrstva</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,10 +89,8 @@
         </table>
     </div>
 
-    <script src="./renderer.js"></script>
-    <script src="./jquery-3.4.0.slim.min.js"></script>
-    <script src="./popper.min.js"></script>
-    <script src="./bootstrap.bundle.min.js"></script>
+    <script src="./js/piklor.js"></script>
+    <script src="./js/renderer.js"></script>
 </body>
 
 </html>

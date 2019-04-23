@@ -1,3 +1,6 @@
+window.$ = window.jQuery = require('jquery');
+window.Bootstrap = require('bootstrap');
+
 var layers = [];
 
 /**
@@ -61,12 +64,16 @@ document
         var trailsInfo = [];
         var table = document.getElementById('filesTable');
         for (var i = 1, row; row = table.rows[i]; i++) {
-            var colorSelect = row.cells[1].childNodes[0];
+            var pickerWrapper = row.cells[1].childNodes[0];
+            var colorPickerButton = pickerWrapper.childNodes[0];
             var layerSelect = row.cells[2].childNodes[0];
+
+            var buttonBackgroundColorClass = colorPickerButton.classList.item(colorPickerButton.classList.length - 1);
+            var color = buttonBackgroundColorClass.replace('bg-', '');
 
             var trailInfo = {};
             trailInfo.path = row.cells[0].innerHTML;
-            trailInfo.color = colorSelect.options[colorSelect.selectedIndex].value;
+            trailInfo.color = color;
             trailInfo.layer = layerSelect.options[layerSelect.selectedIndex].value;
 
             trailsInfo.push(trailInfo);
@@ -82,73 +89,65 @@ document
         clearUI();
     });
 
-
 /* HELPER FUNCTIONS */
 
 function createColorSelect() {
-    var colorSelect = document.createElement('select');
-    colorSelect.classList.add('colorSelect', 'form-control', 'text-dark', 'bg-red');
-    colorSelect.addEventListener("change", () => changeSelectBgColor(colorSelect));
+    var pickerWrapper = document.createElement('div');
+    pickerWrapper.classList.add('picker-wrapper');
 
-    var redOption = document.createElement('option');
-    redOption.classList.add("bg-red", "form-control");
-    redOption.innerHTML = "Červená";
-    redOption.value = 'red';
-    colorSelect.appendChild(redOption);
+    var colorPickerButton = document.createElement('button');
+    colorPickerButton.classList.add('btn', 'bg-red');
+    colorPickerButton.innerHTML = 'Vyber farbu';
+    var colorPicker = document.createElement('div');
+    colorPicker.classList.add('color-picker');
+    var pk = new Piklor(colorPicker, [
+        "#ff0000", "#ff6666", "#0000ff", "#0099ff", "#00ff00", "#00cc00", "#ffff00", "#ff9900"
+    ], {
+        open: colorPickerButton,
+        openEvent: 'click'
+    });
 
-    var lightRedOption = document.createElement('option');
-    lightRedOption.classList.add("bg-lightred", "form-control");
-    lightRedOption.innerHTML = "Svetlo-červená";
-    lightRedOption.value = 'lightred'
-    colorSelect.appendChild(lightRedOption);
+    // update button color when color selected
+    pk.colorChosen(color => {
+        // remove last class
+        var classCount = colorPickerButton.classList.length;
+        colorPickerButton.classList.remove(colorPickerButton.classList.item(classCount - 1));
+        var newClass;
+        switch (color) {
+            case '#ff0000':
+                newClass = 'bg-red';
+                break;
+            case '#ff6666':
+                newClass = 'bg-lightred';
+                break;
+            case '#0000ff':
+                newClass = 'bg-blue';
+                break;
+            case '#0099ff':
+                newClass = 'bg-lightblue';
+                break;
+            case '#00ff00':
+                newClass = 'bg-green';
+                break;
+            case '#00cc00':
+                newClass = 'bg-darkgreen';
+                break;
+            case '#ffff00':
+                newClass = 'bg-yellow';
+                break;
+            case '#ff9900':
+                newClass = 'bg-orange';
+                break;
+            default:
+                newClass = 'btn-secondary';
+        }
+        colorPickerButton.classList.add(newClass);
+    });
 
-    var blueOption = document.createElement('option');
-    blueOption.classList.add("bg-blue", "form-control");
-    blueOption.innerHTML = "Modrá";
-    blueOption.value = 'blue';
-    colorSelect.appendChild(blueOption);
-
-    var lightBlueOption = document.createElement('option');
-    lightBlueOption.classList.add("bg-lightblue", "form-control");
-    lightBlueOption.innerHTML = "Svetlo-modrá";
-    lightBlueOption.value = 'lightblue';
-    colorSelect.appendChild(lightBlueOption);
-
-    var greenOption = document.createElement('option');
-    greenOption.classList.add("bg-green", "form-control");
-    greenOption.innerHTML = "Zelená";
-    greenOption.value = 'green';
-    colorSelect.appendChild(greenOption);
-
-    var darkGreenOption = document.createElement('option');
-    darkGreenOption.classList.add("bg-darkgreen", "form-control");
-    darkGreenOption.innerHTML = "Tmavo-zelená";
-    darkGreenOption.value = 'darkgreen';
-    colorSelect.appendChild(darkGreenOption);
-
-    var yellowOption = document.createElement('option');
-    yellowOption.classList.add("bg-yellow", "form-control");
-    yellowOption.innerHTML = "Žltá";
-    yellowOption.value = 'yellow';
-    colorSelect.appendChild(yellowOption);
-
-    var orangeOption = document.createElement('option');
-    orangeOption.classList.add("bg-orange", "form-control");
-    orangeOption.innerHTML = "Oranžová";
-    orangeOption.value = 'orange';
-    colorSelect.appendChild(orangeOption);
-
-    return colorSelect;
+    pickerWrapper.appendChild(colorPickerButton);
+    pickerWrapper.appendChild(colorPicker);
+    return pickerWrapper;
 };
-
-function changeSelectBgColor(select) {
-    var selectedOption = select.options[select.selectedIndex];
-    var classesCount = select.classList.length;
-    // remove last class
-    select.classList.remove(select.classList.item(classesCount - 1));
-    // add based on selected value
-    select.classList.add(selectedOption.classList.item(0));
-}
 
 function createLayersSelect(selectedLayer) {
     var layerSelect = document.createElement('select');

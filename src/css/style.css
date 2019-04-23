@@ -17,18 +17,22 @@
 
 .bg-red {
     background-color: #ff0000 !important;
+    color: white !important;
 }
 
 .bg-lightred {
     background-color: #ff6666 !important;
+    color: white !important;
 }
 
 .bg-blue {
     background-color: #0000ff !important;
+    color: white !important;
 }
 
 .bg-lightblue {
     background-color: #0099ff !important;
+    color: white !important;
 }
 
 .bg-green {
@@ -37,6 +41,7 @@
 
 .bg-darkgreen {
     background-color: #00cc00 !important;
+    color: white !important;
 }
 
 .bg-yellow {
@@ -45,4 +50,5 @@
 
 .bg-orange {
     background-color: #ff9900 !important;
+    color: white !important;
 }

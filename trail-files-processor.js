@@ -12,7 +12,10 @@ module.exports.processFiles = (trailsInfo) => {
             new Promise((resolve, reject) => {
                 fs.readFile(trailInfo.path, (err, fileContent) => {
                     if (err) {
-                        reject(err);
+                        reject([{
+                            error: err,
+                            file: trailInfo.path
+                        }]);
                     } else {
                         resolve({
                             fileContent: fileContent,
