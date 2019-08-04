@@ -34,7 +34,7 @@ app.on('window-all-closed', function () {
     }
 })
 
-ipcMain.on('trailsInfo', (event, trailsInfo) => {
+ipcMain.on('createMap', (event, trailsInfo) => {
     // filesInfo is array of objects with properties path, color, layer that user set up
 
     var errors = [];
@@ -107,7 +107,7 @@ ipcMain.on('trailsInfo', (event, trailsInfo) => {
                 title: 'KML Mapa',
                 message: message
             }, (response) => {
-                mainWindow.webContents.send('saveSuccess', response);
+                mainWindow.webContents.send('saveSuccessful', response);
             });
         })
         .catch(errors => {

@@ -11,7 +11,7 @@ const {
 } = require('electron');
 
 // after save is successful, clear form
-ipcRenderer.on('saveSuccess', (event, response) => {
+ipcRenderer.on('saveSuccessful', (event, response) => {
     clearUI();
 })
 
@@ -79,7 +79,7 @@ document
             trailsInfo.push(trailInfo);
         }
 
-        ipcRenderer.send('trailsInfo', trailsInfo);
+        ipcRenderer.send('createMap', trailsInfo);
     });
 
 document
