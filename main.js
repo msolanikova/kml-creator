@@ -17,7 +17,10 @@ app.on('ready', () => {
     mainWindow = new BrowserWindow({
         width: 1024,
         height: 768,
-        show: false
+        show: false,
+        webPreferences: {
+            nodeIntegration: true
+        }
     });
     mainWindow.setMenu(null);
     mainWindow.maximize();
@@ -62,18 +65,15 @@ ipcMain.on('createMap', (event, trailsInfo) => {
                 extensions: ['kml']
             }];
             return new Promise((resolve, reject) => {
-                dialog.showSaveDialog(mainWindow, {
+                let filePath = dialog.showSaveDialogSync(mainWindow, {
                     filters: filters
-                }, (filename) => {
-                    if (filename) {
-                        resolve({
-                            filename: filename,
-                            content: content
-                        });
-                    } else {
-                        reject('FILE_NOT_SELECTED');
-                    }
                 });
+                if (filePath) {
+                    resolve({
+                        filename: filePath,
+                        content: content
+                    });
+                }
             });
         })
 
@@ -102,15 +102,17 @@ ipcMain.on('createMap', (event, trailsInfo) => {
                 });
             }
 
-            dialog.showMessageBox(mainWindow, {
+            return dialog.showMessageBox(mainWindow, {
                 type: errors.length == 0 ? 'info' : 'warning',
                 title: 'KML Mapa',
                 message: message
-            }, (response) => {
-                mainWindow.webContents.send('saveSuccessful', response);
             });
         })
+        .then(messageBoxReturnValue => {
+            mainWindow.webContents.send('saveSuccessful', messageBoxReturnValue.response);
+        })
         .catch(errors => {
+            errors = (Array.isArray(errors) ? errors : [errors]);
             var message = `Nie je možné spracovať žiadny z vybraných súborov${os.EOL}${os.EOL}`;
             errors.forEach(error => {
                 message += `-> ${error.file} - ${error.error}${os.EOL}`
