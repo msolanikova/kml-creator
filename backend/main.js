@@ -3,7 +3,7 @@ var fs = require('fs');
 var os = require('os');
 const path = require('path');
 const kmlCreator = require('./kml-creator.js');
-const trailFilesProcessor = require('./trail-files-processor.js');
+const TrailFilesProcessor = require('./TrailFilesProcessor');
 
 let mainWindow;
 
@@ -37,8 +37,7 @@ ipcMain.on('createMap', (event, trailsInfo) => {
 
   var errors = [];
   // process all files
-  trailFilesProcessor
-    .processFiles(trailsInfo)
+  TrailFilesProcessor.processFiles(trailsInfo)
     // then create new KML map
     .then((trailsWithContent) => {
       return new Promise((resolve, reject) => {
@@ -109,6 +108,7 @@ ipcMain.on('createMap', (event, trailsInfo) => {
       mainWindow.webContents.send('saveSuccessful', messageBoxReturnValue.response);
     })
     .catch((errors) => {
+      console.log(errors);
       errors = Array.isArray(errors) ? errors : [errors];
       var message = `Nie je možné spracovať žiadny z vybraných súborov${os.EOL}${os.EOL}`;
       errors.forEach((error) => {

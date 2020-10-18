@@ -1,5 +1,4 @@
 const coordinatesRegex = new RegExp('<LineStrings*>.*?<coordinatess*>(.+?)</s*coordinates>.*?</s*LineString>', 'gis');
-import { Coordinates } from './Coordinates';
 
 export const getCoordinates = (fileContent: string): Promise<string[]> => {
   const coordinatesList = [];

@@ -19,6 +19,7 @@
   "rules": {
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/no-empty-interface": "off",
-    "unused-imports/no-unused-imports-ts": "off"
+    "unused-imports/no-unused-imports-ts": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
   }
 }

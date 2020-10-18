@@ -1,10 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import util from 'util';
 import os from 'os';
 import { GpxResult, GpxTrack, GpxTrackpoint } from './GpxTypes';
-import { Coordinates } from './Coordinates';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import gpxParse from 'gpx-parse';
 
@@ -34,7 +30,7 @@ const processGpxResult = (gpxResult: GpxResult): string[] => {
   return coordinatesList;
 };
 
-const getTrackCoordinates = (track: GpxTrack) => {
+const getTrackCoordinates = (track: GpxTrack): string => {
   let trackCoordinates: string[] = [];
   track.segments.forEach((segment: GpxTrackpoint[]) => {
     trackCoordinates = trackCoordinates.concat(getSegmentCoordinates(segment));
@@ -42,7 +38,7 @@ const getTrackCoordinates = (track: GpxTrack) => {
   return mergeTrackCoordinates(trackCoordinates);
 };
 
-const getSegmentCoordinates = (segment: GpxTrackpoint[]) => {
+const getSegmentCoordinates = (segment: GpxTrackpoint[]): string[] => {
   const segmentCoordinates: string[] = [];
   segment.forEach((trackpoint) => {
     segmentCoordinates.push(`${trackpoint.lon},${trackpoint.lat},${trackpoint.elevation}`);
@@ -56,6 +52,6 @@ const getSegmentCoordinates = (segment: GpxTrackpoint[]) => {
  *
  * @param trackCoordinates
  */
-const mergeTrackCoordinates = (trackCoordinates: string[]) => {
+const mergeTrackCoordinates = (trackCoordinates: string[]): string => {
   return trackCoordinates.join(os.EOL);
 };
