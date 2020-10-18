@@ -1,7 +1,7 @@
 const coordinatesRegex = new RegExp('<LineStrings*>.*?<coordinatess*>(.+?)</s*coordinates>.*?</s*LineString>', 'gis');
 import { Coordinates } from './Coordinates';
 
-export const getCoordinates = (fileContent: string): Coordinates => {
+export const getCoordinates = (fileContent: string): Promise<string[]> => {
   const coordinatesList = [];
   let error: string | undefined;
   let found = false;
@@ -16,8 +16,8 @@ export const getCoordinates = (fileContent: string): Coordinates => {
   } while (match);
 
   if (!found) {
-    error = '[kml-processor] No coordinates were found';
+    return Promise.reject(new Error('[kml-processor] No coordinates were found'));
   }
 
-  return { coordinatesList: coordinatesList, error: error };
+  return Promise.resolve(coordinatesList);
 };

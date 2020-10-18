@@ -37,18 +37,29 @@ module.exports.processFiles = (trailsInfo) => {
 var processFile = (trailWithContent) => {
   var error;
   var fileExtension = path.extname(trailWithContent.trailInfo.path);
-  var result;
+  var resultPromise;
   switch (fileExtension) {
     case '.gpx':
-      result = gpxProcessor.getCoordinates(trailWithContent.fileContent);
+      resultPromise = gpxProcessor.getCoordinates(trailWithContent.fileContent);
       break;
     case '.kml':
-      result = kmlProcessor.getCoordinates(trailWithContent.fileContent);
+      resultPromise = kmlProcessor.getCoordinates(trailWithContent.fileContent);
       break;
     default:
       error = '[trail-files-processor] Unsupported file extension';
   }
-  trailWithContent.coordinatesList = result === undefined ? undefined : result.coordinatesList;
-  trailWithContent.error = result === undefined ? error : result.error;
-  return trailWithContent;
+  if (error != null && error != undefined) {
+    trailWithContent.error = error;
+    return trailWithContent;
+  }
+
+  return resultPromise
+    .then((coordinatesList) => {
+      trailWithContent.coordinatesList = coordinatesList;
+      return trailWithContent;
+    })
+    .catch((err) => {
+      trailWithContent.error = err.message;
+      return trailWithContent;
+    });
 };

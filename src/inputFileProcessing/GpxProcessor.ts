@@ -1,18 +1,23 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const gpxParse = require('gpx-parse');
+import util from 'util';
 import os from 'os';
 import { GpxResult, GpxTrack, GpxTrackpoint } from './GpxTypes';
 import { Coordinates } from './Coordinates';
 
-export const getCoordinates = (fileContent: string): Coordinates => {
-  let coordinatesList: string[] = [];
-  let error: string | undefined;
-  try {
-    coordinatesList = gpxParse.parseGpx(fileContent, processGpxResult);
-  } catch (err) {
-    error = '[gpx-processor] ' + err.message;
-  }
-  return { coordinatesList: coordinatesList, error: error };
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import gpxParse from 'gpx-parse';
+
+export const getCoordinates = (fileContent: string): Promise<string[]> => {
+  const parseGpx = util.promisify(gpxParse.parseGpx);
+
+  return parseGpx(fileContent)
+    .then((gpxResult: GpxResult) => {
+      return processGpxResult(gpxResult);
+    })
+    .catch((err: Error) => {
+      throw new Error('[gpx-processor] ' + err.message);
+    });
 };
 
 /**
@@ -21,12 +26,7 @@ export const getCoordinates = (fileContent: string): Coordinates => {
  * @param error
  * @param gpxResult
  */
-const processGpxResult = (error: Error, gpxResult: GpxResult): string[] => {
-  if (error) {
-    throw error;
-  }
-
-  // get to actual coordinates in the GPX structure
+const processGpxResult = (gpxResult: GpxResult): string[] => {
   const coordinatesList: string[] = [];
   gpxResult.tracks.forEach((track: GpxTrack) => {
     coordinatesList.push(getTrackCoordinates(track));
