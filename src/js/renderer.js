@@ -52,8 +52,8 @@ document
         filesFormatted.forEach(file => {
             var row = filesTableBodyElement.insertRow(-1);
             row.insertCell(0).innerHTML = file;
-            row.insertCell(1).appendChild(createColorSelect());
-            row.insertCell(2).appendChild(createLayersSelect());
+            row.insertCell(1).appendChild(createColorSelect(file));
+            row.insertCell(2).appendChild(createLayersSelect(null, file));
         });
     });
 
@@ -91,12 +91,13 @@ document
 
 /* HELPER FUNCTIONS */
 
-function createColorSelect() {
+function createColorSelect(fileName) {
     var pickerWrapper = document.createElement('div');
     pickerWrapper.classList.add('picker-wrapper');
 
     var colorPickerButton = document.createElement('button');
-    colorPickerButton.classList.add('btn', 'bg-red');
+    let defaultColor = getDefaultColorForFileName(fileName);
+    colorPickerButton.classList.add('btn', 'bg-' + defaultColor);
     colorPickerButton.innerHTML = 'Vyber farbu';
     var colorPicker = document.createElement('div');
     colorPicker.classList.add('color-picker');
@@ -149,16 +150,22 @@ function createColorSelect() {
     return pickerWrapper;
 };
 
-function createLayersSelect(selectedLayer) {
+function createLayersSelect(selectedLayer, fileName) {
     var layerSelect = document.createElement('select');
     layerSelect.classList.add('layerSelect');
     layerSelect.classList.add('form-control');
     layerSelect.classList.add('text-dark');
+    let defaultLayer = getDefaultLayerForFileName(fileName);
 
-    layers.forEach(layer => {
-        var layerOption = document.createElement('option');
+    layers.forEach((layer) => {
+        let layerOption = document.createElement('option');
         layerOption.innerHTML = layer;
-        if (layer == selectedLayer) {
+        if (selectedLayer != null && selectedLayer != undefined) {
+            if (layer == selectedLayer) {
+                layerOption.selected = true;
+            }
+        } else if (layer == defaultLayer) {
+            // if no layer is selected and given layer is identified as default one
             layerOption.selected = true;
         }
         layerSelect.appendChild(layerOption);
@@ -191,7 +198,7 @@ function refreshAllLayersSelects() {
         var select = layerSelects[i];
         var selectedLayer = select.options[select.selectedIndex].value;
 
-        var newSelect = createLayersSelect(selectedLayer);
+        var newSelect = createLayersSelect(selectedLayer, null);
 
         select.parentNode.replaceChild(newSelect, select);
     }
@@ -225,4 +232,43 @@ function decodeHTMLEntities(encodedString) {
         var num = parseInt(numStr, 10);
         return String.fromCharCode(num);
     });
+}
+
+/**
+ * @param fileName
+ * @returns {*} layer based on file name. If file name contains any layer name in itself, given layer is returned. Otherwise first layer is returned
+ */
+function getDefaultLayerForFileName(fileName) {
+    if (fileName == null || fileName == undefined) {
+        return layers[0];
+    }
+
+    for (let layer of layers) {
+        if (fileName.toLowerCase().includes(layer.toLowerCase())) {
+            return layer;
+        }
+    }
+
+    return layers[0];
+}
+
+/**
+ *
+ * @param fileName
+ * @returns {string|string} Returns default color. If fileName contains 'tl' string,
+ */
+function getDefaultColorForFileName(fileName) {
+    let trailLayerShortcuts = [' tl', '-tl', '_tl'];
+
+    if (fileName == null || fileName == undefined) {
+        return 'blue';
+    }
+
+    for (let shortcut of trailLayerShortcuts) {
+        if (fileName.toLowerCase().includes(shortcut)) {
+            return 'blue';
+        }
+    }
+
+    return 'red';
 }
