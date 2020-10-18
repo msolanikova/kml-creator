@@ -2,7 +2,7 @@
   "name": "kml-creator",
   "description": "KML Creator",
   "author": "Mark",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "main": "backend/main.js",
   "repository": "https://github.com/msolanikova/kml-creator",
   "scripts": {
