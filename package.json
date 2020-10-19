@@ -3,7 +3,7 @@
   "description": "KML Creator",
   "author": "Mark",
   "version": "2.2.1",
-  "main": "backend/main.js",
+  "main": "backend/Main.js",
   "repository": "https://github.com/msolanikova/kml-creator",
   "scripts": {
     "start": "tsc && electron .",
