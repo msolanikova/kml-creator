@@ -41,7 +41,7 @@
     "eslint-plugin-unused-imports": "^0.1.3",
     "eslint": "^7.9.0",
     "prettier": "^2.1.1",
-    "electron": "^10.1.2",
+    "electron": "^10.2.0",
     "electron-builder": "^22.8.0",
     "electron-builder-squirrel-windows": "^22.8.1"
   }
