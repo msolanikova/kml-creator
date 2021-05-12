@@ -28,7 +28,7 @@
   "dependencies": {
     "bootstrap": "^4.5.2",
     "gpx-parse": "^0.10.4",
-    "handlebars": "^4.7.6",
+    "handlebars": "^4.7.7",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1"
   },
