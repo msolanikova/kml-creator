@@ -19,6 +19,7 @@ app.on('ready', () => {
     show: false,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
     },
   });
   mainWindow.setMenu(null);
@@ -59,7 +60,7 @@ ipcMain.on('createMap', (event, trailsInfo: TrailFileMeta[]) => {
           extensions: ['kml'],
         },
       ];
-      return new Promise<ResultMap>((resolve, reject) => {
+      return new Promise<ResultMap>((resolve) => {
         const filePath = dialog.showSaveDialogSync(mainWindow, {
           filters: filters,
         });

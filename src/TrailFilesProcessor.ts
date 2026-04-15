@@ -11,7 +11,7 @@ export const processFiles = (trailsInfo: TrailFileMeta[]) => {
 
   trailsInfo.forEach((trailInfo) => {
     promises.push(
-      new Promise<Trail>((resolve, reject) => {
+      new Promise<Trail>((resolve) => {
         fs.readFile(trailInfo.path, (err, fileContent) => {
           if (err) {
             resolve(new Trail(trailInfo, '', err.message));

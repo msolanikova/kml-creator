@@ -2,7 +2,6 @@ const coordinatesRegex = new RegExp('<LineStrings*>.*?<coordinatess*>(.+?)</s*co
 
 export const getCoordinates = (fileContent: string): Promise<string[]> => {
   const coordinatesList = [];
-  let error: string | undefined;
   let found = false;
 
   let match;
