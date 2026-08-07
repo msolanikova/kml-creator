@@ -39,7 +39,7 @@
     "@types/node": "^24.5.2",
     "@typescript-eslint/eslint-plugin": "^8.58.2",
     "@typescript-eslint/parser": "^8.58.2",
-    "electron": "^41.9.1",
+    "electron": "^41.10.3",
     "electron-builder": "^26.15.3",
     "electron-builder-squirrel-windows": "^26.15.3",
     "eslint": "^10.2.0",
