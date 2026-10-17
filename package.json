@@ -31,7 +31,7 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
     "gpx-parse": "^0.10.4",
-    "handlebars": "^4.7.9",
+    "handlebars": "^4.7.10",
     "jquery": "^4.0.0"
   },
   "devDependencies": {
